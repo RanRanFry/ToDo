@@ -34,14 +34,19 @@ public class TodoController {
    }
 
 
-   //2. 일정 전체 조회(작성자명 이나 일정을 기준으로)
+//   2. 일정 전체 조회(작성자명 이나 일정을 기준으로)
     @GetMapping
-    public ResponseEntity<List<TodoResponseDto>> findAllSchedules(
-            @RequestParam(required = false) String modifiedAt,
-            @RequestParam(required = false) String userName
+    public List <TodoResponseDto> findAllTodos(){
+
+        return todoService.findAllTodos();
+    }
+
+    //3. 일정 단건 조회
+    @GetMapping("/{id}")
+    public ResponseEntity <TodoResponseDto> findTodoById(
+            @PathVariable Long id
     ){
-        List<TodoResponseDto> result = todoService.findAllSchedules(modifiedAt, userName);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity <> (todoService.findTodoById(id), HttpStatus.OK);
     }
 
 }

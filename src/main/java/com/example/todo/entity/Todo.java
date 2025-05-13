@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @Getter
@@ -16,8 +17,8 @@ public class Todo {
     private String password;
     private String title;
     private String contents;
-    private LocalDate createdAt;
-    private LocalDate modifiedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
 
 
     public Todo(String userName, String password,String title, String contents) {
@@ -25,11 +26,8 @@ public class Todo {
         this.password = password;
         this.title = title;
         this.contents = contents;
-        this.createdAt = LocalDate.now();
-        this.modifiedAt = LocalDate.now();
+        this.createdAt = LocalDateTime.now();
+        this.modifiedAt = LocalDateTime.now();
     }
-
-
-
 
 }
