@@ -2,15 +2,18 @@ package com.example.todo.repository;
 
 import com.example.todo.dto.TodoResponseDto;
 import com.example.todo.entity.Todo;
+import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +61,24 @@ public class JdbcTemplateTodoRepository implements TodoRepository {
         List <Todo> result =  jdbcTemplate.query("select * from todos where id = ?", todowRowMapperV2(), id);
 
         return result.stream().findAny();
+    }
+
+    //단건 수정
+    @Override
+    public int updateText(Long id, String userName, String password, String contents) {
+
+//        String targetPassword= jdbcTemplate.query("select password from todos where id = ?", todowRowMapperV2(), id);
+        String sql = "SELECT password FROM todos WHERE id=?";
+
+        String targetPassword = (String) jdbcTemplate.queryForObject(  sql, String.class, id);
+
+        if ( !targetPassword.equals(password)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid password");
+        }
+        LocalDateTime nowModified = LocalDateTime.now();
+
+
+        return jdbcTemplate.update("update todos set userName=? ,contents = ?, modifiedAt =? where id = ? ", userName, contents,nowModified, id);
     }
 
 

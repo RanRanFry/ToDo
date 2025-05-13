@@ -49,4 +49,24 @@ public class TodoController {
         return new ResponseEntity <> (todoService.findTodoById(id), HttpStatus.OK);
     }
 
+    //4. 일정 단건 수정
+
+    @PatchMapping("/{id}")
+    public ResponseEntity <TodoResponseDto> updateText(
+            @PathVariable Long id,
+            @RequestBody ToDoRequestDto requestDto
+    ){
+        return new ResponseEntity<>(todoService.updateText(id,requestDto.getUserName(),requestDto.getPassword(),requestDto.getContents()),HttpStatus.OK) ;
+
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity <Void> deleteMemo (@PathVariable Long id ,@RequestBody String password){
+        todoService.deleteMemo(id, password);
+        return new ResponseEntity<> (HttpStatus.OK);
+    }
+
+
+
+
 }
